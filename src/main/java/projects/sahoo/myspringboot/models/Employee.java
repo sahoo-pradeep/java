@@ -19,11 +19,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -49,15 +51,18 @@ public class Employee implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private Department department;
 
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private PersonalDetails personalDetails;
+
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<PreviousCompany> previousCompanies = new HashSet<>();
+
     // Note: Do not use CascadeType.REMOVE for ManyToMany. It will remove all mapped entities as well
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "employee_project",
             joinColumns = {@JoinColumn(name = "employee_id", foreignKey = @ForeignKey(name = "fk_employee_project_employee_id"))},
             inverseJoinColumns = {@JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "fk_employee_project_project_id"))})
     private Set<Project> projects = new HashSet<>();
-
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<PreviousCompany> previousCompanies = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -86,5 +91,32 @@ public class Employee implements Serializable {
     public void removePreviousCompany(PreviousCompany previousCompany){
         previousCompanies.remove(previousCompany);
         previousCompany.setEmployee(null);
+    }
+
+    public void setPersonalDetails(PersonalDetails personalDetails) {
+        if (personalDetails == null){
+            if (this.personalDetails != null){
+                this.personalDetails.setEmployee(null);
+            }
+        } else {
+            personalDetails.setEmployee(this);
+        }
+
+        this.personalDetails = personalDetails;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(globalId, employee.globalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(globalId);
     }
 }

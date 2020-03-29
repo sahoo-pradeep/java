@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -50,4 +51,19 @@ public class Project implements Serializable {
     @UpdateTimestamp
     @Column(nullable = false)
     private LocalDateTime updateDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Project project = (Project) o;
+        return Objects.equals(projectCode, project.projectCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(projectCode);
+    }
 }
