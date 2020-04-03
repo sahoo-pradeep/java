@@ -1,8 +1,10 @@
 # Spring Boot Project
 
 ## Spring
-- [ ] Bean Lifecycle
+- [X] Bean Lifecycle
 - [ ] Transaction
+- [ ] Qualifiers
+- [X] Global Exception Handlers
 
 ## Hibernate
 - [X] OneToOne
@@ -13,4 +15,4 @@
 - [X] SQL (H2)
 - [ ] Redis
 - [ ] RabbitMQ
-- [ ] Swagger
+- [X] Swagger
