@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.models;
+package projects.sahoo.myspringboot.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package projects.sahoo.myspringboot.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import projects.sahoo.myspringboot.models.Employee;
+import projects.sahoo.myspringboot.models.entities.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {

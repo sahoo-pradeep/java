@@ -1,8 +1,9 @@
-package projects.sahoo.myspringboot.models;
+package projects.sahoo.myspringboot.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import projects.sahoo.myspringboot.models.enums.BloodGroup;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

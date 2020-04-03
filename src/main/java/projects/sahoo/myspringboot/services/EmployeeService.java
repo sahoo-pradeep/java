@@ -7,10 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import projects.sahoo.myspringboot.controllers.request.EmployeeRequest;
 import projects.sahoo.myspringboot.controllers.request.PreviousCompanyRequest;
 import projects.sahoo.myspringboot.controllers.request.ProjectRequest;
-import projects.sahoo.myspringboot.models.Employee;
-import projects.sahoo.myspringboot.models.PersonalDetails;
-import projects.sahoo.myspringboot.models.PreviousCompany;
-import projects.sahoo.myspringboot.models.Project;
+import projects.sahoo.myspringboot.models.entities.Employee;
+import projects.sahoo.myspringboot.models.entities.PersonalDetails;
+import projects.sahoo.myspringboot.models.entities.PreviousCompany;
+import projects.sahoo.myspringboot.models.entities.Project;
 import projects.sahoo.myspringboot.repositories.EmployeeRepository;
 import projects.sahoo.myspringboot.repositories.ProjectRepository;
 
@@ -32,6 +32,11 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Employee getEmployee(String globalId) {
+        return employeeRepository.findByGlobalId(globalId);
     }
 
     @Transactional

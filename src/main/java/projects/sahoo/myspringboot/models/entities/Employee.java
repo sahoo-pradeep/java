@@ -1,9 +1,10 @@
-package projects.sahoo.myspringboot.models;
+package projects.sahoo.myspringboot.models.entities;
 
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import projects.sahoo.myspringboot.models.enums.Department;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

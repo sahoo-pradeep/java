@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.models;
+package projects.sahoo.myspringboot.models.enums;
 
 public enum BloodGroup {
     A,
