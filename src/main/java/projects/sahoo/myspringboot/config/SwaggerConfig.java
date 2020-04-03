@@ -19,6 +19,7 @@ public class SwaggerConfig {
     public Docket api() {
         // URL: http://localhost:8080/swagger-ui.html
         return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiEndPointsInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("projects.sahoo.myspringboot.controllers"))
                 .paths(PathSelectors.any())
