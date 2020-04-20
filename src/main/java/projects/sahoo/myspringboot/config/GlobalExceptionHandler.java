@@ -9,12 +9,12 @@ import projects.sahoo.myspringboot.models.utils.ErrorMessage;
 
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessage> globalException(Exception e, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(e.getMessage(), request.getDescription(false),
-                LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorMessage> globalException(Exception e, WebRequest request) {
+//        ErrorMessage message = new ErrorMessage(e.getMessage(), request.getDescription(false),
+//                LocalDateTime.now());
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+//    }
 }
