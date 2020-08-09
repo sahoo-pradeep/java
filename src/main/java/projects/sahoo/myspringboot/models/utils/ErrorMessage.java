@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ErrorMessage {
+    private int code;
     private String message;
-    private String details;
     private LocalDateTime timestamp;
 }

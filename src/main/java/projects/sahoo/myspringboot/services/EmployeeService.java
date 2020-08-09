@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projects.sahoo.myspringboot.controllers.request.EmployeeRequest;
 import projects.sahoo.myspringboot.controllers.request.PreviousCompanyRequest;
 import projects.sahoo.myspringboot.controllers.request.ProjectRequest;
+import projects.sahoo.myspringboot.exception.EmployeeException;
 import projects.sahoo.myspringboot.models.entities.Employee;
 import projects.sahoo.myspringboot.models.entities.PersonalDetails;
 import projects.sahoo.myspringboot.models.entities.PreviousCompany;
@@ -61,7 +62,7 @@ public class EmployeeService {
         log.debug("Adding Project with request: {}", projectRequest);
         Employee employee = employeeRepository.findByGlobalId(projectRequest.getGlobalId());
         if (employee == null) {
-            throw new RuntimeException("Invalid Global ID");
+            throw new EmployeeException("Invalid Global ID");
         }
 
         Project project = projectRepository.findByProjectCode(projectRequest.getProjectCode());
@@ -80,7 +81,7 @@ public class EmployeeService {
         log.debug("Adding Previous Company with request: {}", previousCompanyRequest);
         Employee employee = employeeRepository.findByGlobalId(previousCompanyRequest.getGlobalId());
         if (employee == null) {
-            throw new RuntimeException("Invalid Global ID");
+            throw new EmployeeException("Invalid Global ID");
         }
 
         PreviousCompany previousCompany = new PreviousCompany();
