@@ -7,6 +7,7 @@ import projects.sahoo.myspringboot.models.entities.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-    Optional<Project> findByProjectCode(String projectCode);
+
+  Optional<Project> findByProjectCode(String projectCode);
 
 }

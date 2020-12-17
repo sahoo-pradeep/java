@@ -7,5 +7,6 @@ import projects.sahoo.myspringboot.models.entities.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    Optional<Employee> findByGlobalId(String globalId);
+
+  Optional<Employee> findByGlobalId(String globalId);
 }

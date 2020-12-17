@@ -1,18 +1,18 @@
 package projects.sahoo.myspringboot.models.enums;
 
 public enum Department {
-    TECHNOLOGY("Technology"),
-    FINANCE("Finance"),
-    HR("HR"),
-    MARKETING("Marketing");
+  TECHNOLOGY("Technology"),
+  FINANCE("Finance"),
+  HR("HR"),
+  MARKETING("Marketing");
 
-    String value;
+  String value;
 
-    Department(String value) {
-        this.value = value;
-    }
+  Department(String value) {
+    this.value = value;
+  }
 
-    public String getValue() {
-        return value;
-    }
+  public String getValue() {
+    return value;
+  }
 }

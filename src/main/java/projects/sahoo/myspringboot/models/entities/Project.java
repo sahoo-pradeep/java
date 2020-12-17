@@ -31,33 +31,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "projects", uniqueConstraints = {
-        @UniqueConstraint(name = "unq_project_code", columnNames = {Project.PROJECT_CODE})})
+    @UniqueConstraint(name = "unq_project_code", columnNames = {Project.PROJECT_CODE})})
 public class Project implements Serializable {
-    private static final long serialVersionUID = 1L;
-    public static final String PROJECT_CODE = "project_code";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  private static final long serialVersionUID = 1L;
+  public static final String PROJECT_CODE = "project_code";
 
-    @EqualsAndHashCode.Include
-    @Column(name = PROJECT_CODE, nullable = false, updatable = false)
-    private String projectCode;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String projectName;
+  @EqualsAndHashCode.Include
+  @Column(name = PROJECT_CODE, nullable = false, updatable = false)
+  private String projectCode;
 
-    @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
-    @JsonIgnore
-    @ToString.Exclude
-    @Builder.Default
-    private Set<Employee> employees = new HashSet<>();
+  @Column(nullable = false)
+  private String projectName;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createDate;
+  @ManyToMany(mappedBy = "projects", fetch = FetchType.LAZY)
+  @JsonIgnore
+  @ToString.Exclude
+  @Builder.Default
+  private Set<Employee> employees = new HashSet<>();
 
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updateDate;
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createDate;
+
+  @UpdateTimestamp
+  @Column(nullable = false)
+  private LocalDateTime updateDate;
 }

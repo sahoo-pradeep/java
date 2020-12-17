@@ -23,45 +23,47 @@ import projects.sahoo.myspringboot.services.EmployeeService;
 @RestController
 @Api
 public class EmployeeController {
-    private final EmployeeService employeeService;
 
-    @Autowired
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
+  private final EmployeeService employeeService;
 
-    @GetMapping("/employees")
-    @ApiOperation("Get list of all Employee Details")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
-        return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.getAllEmployees());
-    }
+  @Autowired
+  public EmployeeController(EmployeeService employeeService) {
+    this.employeeService = employeeService;
+  }
 
-    @GetMapping("/employee/{globalId}")
-    @ApiOperation("Get Employee Details by globalId")
-    public ResponseEntity<Employee> getEmployee(@PathVariable("globalId") String globalId) {
-        return employeeService.getEmployee(globalId)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
-    }
+  @GetMapping("/employees")
+  @ApiOperation("Get list of all Employee Details")
+  public ResponseEntity<List<Employee>> getAllEmployees() {
+    return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.getAllEmployees());
+  }
 
-    @PostMapping("/employee")
-    @ApiOperation(value = "Create a new Employee")
-    public ResponseEntity<Employee> createEmployee(@RequestBody @Valid EmployeeRequest employeeRequest) {
-        return ResponseEntity.ok(employeeService.createEmployee(employeeRequest));
-    }
+  @GetMapping("/employee/{globalId}")
+  @ApiOperation("Get Employee Details by globalId")
+  public ResponseEntity<Employee> getEmployee(@PathVariable("globalId") String globalId) {
+    return employeeService.getEmployee(globalId)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
 
-    @PostMapping("/employee/project")
-    @ApiOperation(value = "Add a new Project to Employee")
-    public ResponseEntity<Employee> addProject(@RequestBody ProjectRequest projectRequest) {
-        Employee employee = employeeService.addProject(projectRequest);
-        return ResponseEntity.ok(employee);
-    }
+  @PostMapping("/employee")
+  @ApiOperation(value = "Create a new Employee")
+  public ResponseEntity<Employee> createEmployee(
+      @RequestBody @Valid EmployeeRequest employeeRequest) {
+    return ResponseEntity.ok(employeeService.createEmployee(employeeRequest));
+  }
 
-    @PostMapping("/employee/company")
-    @ApiOperation(value = "Add Employee Previous Company")
-    public ResponseEntity<Employee> addPreviousCompany(
-            @RequestBody PreviousCompanyRequest previousCompanyRequest) {
-        Employee employee = employeeService.addPreviousCompany(previousCompanyRequest);
-        return ResponseEntity.ok(employee);
-    }
+  @PostMapping("/employee/project")
+  @ApiOperation(value = "Add a new Project to Employee")
+  public ResponseEntity<Employee> addProject(@RequestBody ProjectRequest projectRequest) {
+    Employee employee = employeeService.addProject(projectRequest);
+    return ResponseEntity.ok(employee);
+  }
+
+  @PostMapping("/employee/company")
+  @ApiOperation(value = "Add Employee Previous Company")
+  public ResponseEntity<Employee> addPreviousCompany(
+      @RequestBody PreviousCompanyRequest previousCompanyRequest) {
+    Employee employee = employeeService.addPreviousCompany(previousCompanyRequest);
+    return ResponseEntity.ok(employee);
+  }
 }

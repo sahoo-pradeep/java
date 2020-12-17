@@ -6,16 +6,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProjectRequest {
-    private String globalId;
-    private String projectCode;
-    private String projectName;
 
-    public ProjectRequest() {
-    }
+  private String globalId;
+  private String projectCode;
+  private String projectName;
 
-    public ProjectRequest(String globalId, String projectCode, String projectName) {
-        this.globalId = globalId;
-        this.projectCode = projectCode;
-        this.projectName = projectName;
-    }
+  public ProjectRequest() {
+  }
+
+  public ProjectRequest(String globalId, String projectCode, String projectName) {
+    this.globalId = globalId;
+    this.projectCode = projectCode;
+    this.projectName = projectName;
+  }
 }

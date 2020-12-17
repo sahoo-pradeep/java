@@ -29,25 +29,26 @@ import lombok.ToString;
 @Entity
 @Table(name = "previous_companies")
 public class PreviousCompany implements Serializable {
-    private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+  private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_previous_companies_employee_id"))
-    private Employee employee;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    @Column(nullable = false)
-    private String companyName;
+  @JsonIgnore
+  @ToString.Exclude
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = @ForeignKey(name = "fk_previous_companies_employee_id"))
+  private Employee employee;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
+  @Column(nullable = false)
+  private String companyName;
 
-    @Column(nullable = false)
-    private LocalDate endDate;
+  @Column(nullable = false)
+  private LocalDate startDate;
+
+  @Column(nullable = false)
+  private LocalDate endDate;
 }

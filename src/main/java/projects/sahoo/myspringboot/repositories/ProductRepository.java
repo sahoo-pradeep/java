@@ -1,18 +1,18 @@
 package projects.sahoo.myspringboot.repositories;
 
-import projects.sahoo.myspringboot.models.entities.Product;
-
 import java.util.List;
 import java.util.Optional;
+import projects.sahoo.myspringboot.models.entities.Product;
 
 public interface ProductRepository {
-    Optional<Product> findById(Integer id);
 
-    List<Product> findAll();
+  Optional<Product> findById(Integer id);
 
-    Product save(Product product);
+  List<Product> findAll();
 
-    boolean update(Product product);
+  Product save(Product product);
 
-    boolean delete(Integer id);
+  boolean update(Product product);
+
+  boolean delete(Integer id);
 }

@@ -1,5 +1,6 @@
 package projects.sahoo.myspringboot.controllers;
 
+import java.util.Optional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,190 +19,189 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import projects.sahoo.myspringboot.models.entities.Product;
 import projects.sahoo.myspringboot.services.api.ProductService;
 
-import java.util.Optional;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProductControllerTest {
-    private static final String PRODUCT_NAME = "Product Name";
 
-    @MockBean
-    private ProductService productService;
+  private static final String PRODUCT_NAME = "Product Name";
 
-    @Autowired
-    private MockMvc mockMvc;
+  @MockBean
+  private ProductService productService;
 
-    @Test
-    @DisplayName("GET /product/1 - Found")
-    void testGetProductByIdFound() throws Exception{
-        // Setup Mocked Service
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
-        Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
+  @Autowired
+  private MockMvc mockMvc;
 
-        // Execute the GET request
-        mockMvc.perform(MockMvcRequestBuilders.get("/product/{1}", 1))
+  @Test
+  @DisplayName("GET /product/1 - Found")
+  void testGetProductByIdFound() throws Exception {
+    // Setup Mocked Service
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
+    Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
 
-                // Validate the response code and content type
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+    // Execute the GET request
+    mockMvc.perform(MockMvcRequestBuilders.get("/product/{1}", 1))
 
-                // Validate the headers
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"1\""))
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
+        // Validate the response code and content type
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
-                // Validate returned fields
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is(PRODUCT_NAME)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(1)));
-    }
+        // Validate the headers
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"1\""))
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
 
-    @Test
-    @DisplayName("GET /product/1 - Not Found")
-    void testGetProductByIdNotFound() throws Exception{
-        // Setup Mocked Service
-        Mockito.doReturn(Optional.empty()).when(productService).findById(1);
+        // Validate returned fields
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is(PRODUCT_NAME)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(1)));
+  }
 
-        // Execute the GET request
-        mockMvc.perform(MockMvcRequestBuilders.get("/product/{1}", 1))
+  @Test
+  @DisplayName("GET /product/1 - Not Found")
+  void testGetProductByIdNotFound() throws Exception {
+    // Setup Mocked Service
+    Mockito.doReturn(Optional.empty()).when(productService).findById(1);
 
-                // Validate that we get 404 Not Found response
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
+    // Execute the GET request
+    mockMvc.perform(MockMvcRequestBuilders.get("/product/{1}", 1))
 
-    @Test
-    @DisplayName("POST /product - Success")
-    void testCreateProductSuccess() throws Exception{
-        // Setup Mocked Service
-        Product postProduct = new Product(PRODUCT_NAME, 10);
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
-        Mockito.doReturn(mockProduct).when(productService).save(Mockito.any());
+        // Validate that we get 404 Not Found response
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
 
-        // Execute the POST request
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/product")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Helper.asJsonString(postProduct)))
+  @Test
+  @DisplayName("POST /product - Success")
+  void testCreateProductSuccess() throws Exception {
+    // Setup Mocked Service
+    Product postProduct = new Product(PRODUCT_NAME, 10);
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
+    Mockito.doReturn(mockProduct).when(productService).save(Mockito.any());
 
-                // Validate the response code and content type
-                .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+    // Execute the POST request
+    mockMvc.perform(MockMvcRequestBuilders
+        .post("/product")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(Helper.asJsonString(postProduct)))
 
-                // Validate the headers
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"1\""))
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
+        // Validate the response code and content type
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
-                // Validate returned fields
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Product Name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(1)));
-    }
+        // Validate the headers
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"1\""))
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
 
-    @Test
-    @DisplayName("PUT /product/1 - Success")
-    void testUpdateProductSuccess() throws Exception{
-        // Setup Mocked Service
-        Product putProduct = new Product(PRODUCT_NAME, 10);
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
-        Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
-        Mockito.doReturn(true).when(productService).update(Mockito.any());
+        // Validate returned fields
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Product Name")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(1)));
+  }
 
-        // Execute the PUT request
-        mockMvc.perform(MockMvcRequestBuilders
-                .put("/product/{id}", 1)
-                .header(HttpHeaders.IF_MATCH, 1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Helper.asJsonString(putProduct)))
+  @Test
+  @DisplayName("PUT /product/1 - Success")
+  void testUpdateProductSuccess() throws Exception {
+    // Setup Mocked Service
+    Product putProduct = new Product(PRODUCT_NAME, 10);
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
+    Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
+    Mockito.doReturn(true).when(productService).update(Mockito.any());
 
-                // Validate the response code and content type
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+    // Execute the PUT request
+    mockMvc.perform(MockMvcRequestBuilders
+        .put("/product/{id}", 1)
+        .header(HttpHeaders.IF_MATCH, 1)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(Helper.asJsonString(putProduct)))
 
-                // Validate the headers
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"2\""))
-                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
+        // Validate the response code and content type
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
 
-                // Validate returned fields
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Product Name")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(2)));
-    }
+        // Validate the headers
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.ETAG, "\"2\""))
+        .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/product/1"))
 
-    @Test
-    @DisplayName("PUT /product/1 - Version Mismatch")
-    void testUpdateProductVersionMismatch() throws Exception{
-        // Setup Mocked Service
-        Product putProduct = new Product(PRODUCT_NAME, 10);
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 2);
-        Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
+        // Validate returned fields
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("Product Name")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.quantity", Matchers.is(10)))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.version", Matchers.is(2)));
+  }
 
-        // Execute the PUT request
-        mockMvc.perform(MockMvcRequestBuilders
-                .put("/product/{id}", 1)
-                .header(HttpHeaders.IF_MATCH, 1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Helper.asJsonString(putProduct)))
+  @Test
+  @DisplayName("PUT /product/1 - Version Mismatch")
+  void testUpdateProductVersionMismatch() throws Exception {
+    // Setup Mocked Service
+    Product putProduct = new Product(PRODUCT_NAME, 10);
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 2);
+    Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
 
-                // Validate the response code and content type
-                .andExpect(MockMvcResultMatchers.status().isConflict());
-    }
+    // Execute the PUT request
+    mockMvc.perform(MockMvcRequestBuilders
+        .put("/product/{id}", 1)
+        .header(HttpHeaders.IF_MATCH, 1)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(Helper.asJsonString(putProduct)))
 
-    @Test
-    @DisplayName("PUT /product/1 - Not Found")
-    void testUpdateProductNotFound() throws Exception{
-        // Setup Mocked Service
-        Product putProduct = new Product(PRODUCT_NAME, 10);
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 2);
-        Mockito.doReturn(Optional.empty()).when(productService).findById(1);
+        // Validate the response code and content type
+        .andExpect(MockMvcResultMatchers.status().isConflict());
+  }
 
-        // Execute the PUT request
-        mockMvc.perform(MockMvcRequestBuilders
-                .put("/product/{id}", 1)
-                .header(HttpHeaders.IF_MATCH, 1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Helper.asJsonString(putProduct)))
+  @Test
+  @DisplayName("PUT /product/1 - Not Found")
+  void testUpdateProductNotFound() throws Exception {
+    // Setup Mocked Service
+    Product putProduct = new Product(PRODUCT_NAME, 10);
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 2);
+    Mockito.doReturn(Optional.empty()).when(productService).findById(1);
 
-                // Validate the response code and content type
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
+    // Execute the PUT request
+    mockMvc.perform(MockMvcRequestBuilders
+        .put("/product/{id}", 1)
+        .header(HttpHeaders.IF_MATCH, 1)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .content(Helper.asJsonString(putProduct)))
 
-    @Test
-    @DisplayName("DELETE /product/1 - Success")
-    void testProductDeleteSuccess() throws Exception {
-        // Setup Mock Services
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
-        Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
-        Mockito.doReturn(true).when(productService).delete(Mockito.any());
+        // Validate the response code and content type
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
 
-        // Execute DELETE request
-        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
+  @Test
+  @DisplayName("DELETE /product/1 - Success")
+  void testProductDeleteSuccess() throws Exception {
+    // Setup Mock Services
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
+    Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
+    Mockito.doReturn(true).when(productService).delete(Mockito.any());
 
-    @Test
-    @DisplayName("DELETE /product/1 - Not Found")
-    void testProductDeleteNotFound() throws Exception {
-        // Setup Mock Service
-        Mockito.doReturn(Optional.empty()).when(productService).findById(1);
+    // Execute DELETE request
+    mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+  }
 
-        // Execute DELETE request
-        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
+  @Test
+  @DisplayName("DELETE /product/1 - Not Found")
+  void testProductDeleteNotFound() throws Exception {
+    // Setup Mock Service
+    Mockito.doReturn(Optional.empty()).when(productService).findById(1);
 
-    @Test
-    @DisplayName("DELETE /product/1 - Failure")
-    void testProductDeleteFailure() throws Exception {
-        // Setup Mock Services
-        Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
-        Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
-        Mockito.doReturn(false).when(productService).delete(Mockito.any());
+    // Execute DELETE request
+    mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
 
-        // Execute DELETE request
-        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError());
-    }
+  @Test
+  @DisplayName("DELETE /product/1 - Failure")
+  void testProductDeleteFailure() throws Exception {
+    // Setup Mock Services
+    Product mockProduct = new Product(1, PRODUCT_NAME, 10, 1);
+    Mockito.doReturn(Optional.of(mockProduct)).when(productService).findById(1);
+    Mockito.doReturn(false).when(productService).delete(Mockito.any());
+
+    // Execute DELETE request
+    mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", 1))
+        .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+  }
 }

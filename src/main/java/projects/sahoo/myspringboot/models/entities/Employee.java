@@ -39,87 +39,90 @@ import projects.sahoo.myspringboot.models.enums.Department;
 @AllArgsConstructor
 @Entity
 @Table(name = "employees", uniqueConstraints = {
-        @UniqueConstraint(name = "unq_global_id", columnNames = {Employee.GLOBAL_ID})})
+    @UniqueConstraint(name = "unq_global_id", columnNames = {Employee.GLOBAL_ID})})
 public class Employee implements Serializable {
-    private static final long serialVersionUID = 1L;
-    public static final String GLOBAL_ID = "global_id";
-    public static final String EMPLOYEE_ID = "employee_id";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  private static final long serialVersionUID = 1L;
+  public static final String GLOBAL_ID = "global_id";
+  public static final String EMPLOYEE_ID = "employee_id";
 
-    @Column(name = GLOBAL_ID, nullable = false, updatable = false, length = 20)
-    @EqualsAndHashCode.Include
-    private String globalId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(name = GLOBAL_ID, nullable = false, updatable = false, length = 20)
+  @EqualsAndHashCode.Include
+  private String globalId;
 
-    @Enumerated(value = EnumType.STRING)
-    private Department department;
+  @Column(nullable = false)
+  private String name;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private PersonalDetails personalDetails;
+  @Enumerated(value = EnumType.STRING)
+  private Department department;
 
-    // Note: orphanRemoval: if previousCompanies is set to null, or some other Set, then the
-    // existing previousCompanies will become orphan. Setting orphanRemoval = true will remove such
-    // orphan entities (clean up process)
-    @Setter(AccessLevel.PRIVATE)
-    @Builder.Default
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-        orphanRemoval = true)
-    private Set<PreviousCompany> previousCompanies = new HashSet<>();
+  @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private PersonalDetails personalDetails;
 
-    // Note: Do not use CascadeType.REMOVE for ManyToMany. It will remove all mapped entities as well
-    @Setter(AccessLevel.PRIVATE)
-    @Builder.Default
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(name = "employee_project",
-            joinColumns = {@JoinColumn(name = "employee_id", foreignKey = @ForeignKey(name = "fk_employees_project_employee_id"))},
-            inverseJoinColumns = {@JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "fk_employees_project_project_id"))})
-    private Set<Project> projects = new HashSet<>();
+  // Note: orphanRemoval: if previousCompanies is set to null, or some other Set, then the
+  // existing previousCompanies will become orphan. Setting orphanRemoval = true will remove such
+  // orphan entities (clean up process)
+  @Setter(AccessLevel.PRIVATE)
+  @Builder.Default
+  @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+      orphanRemoval = true)
+  private Set<PreviousCompany> previousCompanies = new HashSet<>();
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createDate;
+  // Note: Do not use CascadeType.REMOVE for ManyToMany. It will remove all mapped entities as well
+  @Setter(AccessLevel.PRIVATE)
+  @Builder.Default
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  @JoinTable(name = "employee_project",
+      joinColumns = {
+          @JoinColumn(name = "employee_id", foreignKey = @ForeignKey(name = "fk_employees_project_employee_id"))},
+      inverseJoinColumns = {
+          @JoinColumn(name = "project_id", foreignKey = @ForeignKey(name = "fk_employees_project_project_id"))})
+  private Set<Project> projects = new HashSet<>();
 
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updateDate;
+  @CreationTimestamp
+  @Column(nullable = false, updatable = false)
+  private LocalDateTime createDate;
 
-    // mandatory for OneToOne mapping
-    public void setPersonalDetails(PersonalDetails personalDetails) {
-        if (personalDetails == null){
-            if (this.personalDetails != null){
-                this.personalDetails.setEmployee(null);
-            }
-        } else {
-            personalDetails.setEmployee(this);
-        }
+  @UpdateTimestamp
+  @Column(nullable = false)
+  private LocalDateTime updateDate;
 
-        this.personalDetails = personalDetails;
+  // mandatory for OneToOne mapping
+  public void setPersonalDetails(PersonalDetails personalDetails) {
+    if (personalDetails == null) {
+      if (this.personalDetails != null) {
+        this.personalDetails.setEmployee(null);
+      }
+    } else {
+      personalDetails.setEmployee(this);
     }
 
-    // for OneToMany mapping - add and remove mothods
-    public void addPreviousCompany(PreviousCompany previousCompany){
-        previousCompanies.add(previousCompany);
-        previousCompany.setEmployee(this);
-    }
+    this.personalDetails = personalDetails;
+  }
 
-    public void removePreviousCompany(PreviousCompany previousCompany){
-        previousCompanies.remove(previousCompany);
-        previousCompany.setEmployee(null);
-    }
+  // for OneToMany mapping - add and remove mothods
+  public void addPreviousCompany(PreviousCompany previousCompany) {
+    previousCompanies.add(previousCompany);
+    previousCompany.setEmployee(this);
+  }
 
-    // mandatory for ManyToMany entities to be in sync
-    public void addProject(Project project){
-        projects.add(project);
-        project.getEmployees().add(this);
-    }
+  public void removePreviousCompany(PreviousCompany previousCompany) {
+    previousCompanies.remove(previousCompany);
+    previousCompany.setEmployee(null);
+  }
 
-    public void removeProject(Project project){
-        projects.remove(project);
-        project.getEmployees().remove(this);
-    }
+  // mandatory for ManyToMany entities to be in sync
+  public void addProject(Project project) {
+    projects.add(project);
+    project.getEmployees().add(this);
+  }
+
+  public void removeProject(Project project) {
+    projects.remove(project);
+    project.getEmployees().remove(this);
+  }
 }

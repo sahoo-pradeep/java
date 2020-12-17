@@ -29,23 +29,24 @@ import projects.sahoo.myspringboot.models.enums.BloodGroup;
 @Entity
 @Table(name = "personal_details")
 public class PersonalDetails implements Serializable {
-    private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+  private static final long serialVersionUID = 1L;
 
-    @Column(nullable = false)
-    private String contactNumber;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private BloodGroup bloodGroup;
+  @Column(nullable = false)
+  private String contactNumber;
 
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+  @Enumerated(EnumType.STRING)
+  @Column
+  private BloodGroup bloodGroup;
+
+  @JsonIgnore
+  @ToString.Exclude
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "employee_id")
+  private Employee employee;
 }

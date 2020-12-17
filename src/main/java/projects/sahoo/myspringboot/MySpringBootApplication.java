@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"projects.sahoo.myspringboot", "projects.sahoo.bootstrap"})
 public class MySpringBootApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MySpringBootApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(MySpringBootApplication.class, args);
+  }
 }
