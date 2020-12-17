@@ -19,7 +19,7 @@ public class DevBootstrap {
     private static final String NAME = "John Cena";
     private static final Department DEPARTMENT = Department.TECHNOLOGY;
     private static final String CONTACT_NUMBER = "8811881188";
-    private static final BloodGroup BLOOD_GROUP = BloodGroup.A;
+    private static final BloodGroup BLOOD_GROUP = BloodGroup.A_POSITIVE;
 
     private static final String PROJECT_CODE = "PROJ-001";
     private static final String PROJECT_NAME = "Project 001";
@@ -29,7 +29,7 @@ public class DevBootstrap {
     private static final LocalDate END_DATE = LocalDate.of(2019, 3, 31);
 
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @Autowired
     public DevBootstrap(EmployeeService employeeService) {

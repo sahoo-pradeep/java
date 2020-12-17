@@ -1,9 +1,8 @@
 package projects.sahoo.myspringboot.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,24 +13,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
-@Table(name = "previous_company")
+@Table(name = "previous_companies")
 public class PreviousCompany implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @JsonIgnore
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_previous_company_employee_id"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_previous_companies_employee_id"))
     private Employee employee;
 
     @Column(nullable = false)
@@ -42,19 +50,4 @@ public class PreviousCompany implements Serializable {
 
     @Column(nullable = false)
     private LocalDate endDate;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        PreviousCompany that = (PreviousCompany) o;
-        return Objects.equals(employee, that.employee);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(employee);
-    }
 }

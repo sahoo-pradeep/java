@@ -1,5 +1,6 @@
 package projects.sahoo.myspringboot.services;
 
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ import java.util.List;
 @Service
 @Slf4j
 public class EmployeeService {
-    private EmployeeRepository employeeRepository;
-    private ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ProjectRepository projectRepository;
 
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository,
@@ -36,58 +37,63 @@ public class EmployeeService {
     }
 
     @Transactional(readOnly = true)
-    public Employee getEmployee(String globalId) {
+    public Optional<Employee> getEmployee(String globalId) {
         return employeeRepository.findByGlobalId(globalId);
     }
 
     @Transactional
     public Employee createEmployee(EmployeeRequest employeeRequest) {
         log.debug("Creating Employee with request: {}", employeeRequest);
-        Employee employee = new Employee();
 
-        PersonalDetails personalDetails = new PersonalDetails();
-        personalDetails.setContactNumber(employeeRequest.getContactNumber());
-        personalDetails.setBloodGroup(employeeRequest.getBloodGroup());
-        employee.setGlobalId(employeeRequest.getGlobalId());
-        employee.setName(employeeRequest.getName());
-        employee.setDepartment(employeeRequest.getDepartment());
+        Employee employee = Employee.builder()
+            .globalId(employeeRequest.getGlobalId())
+            .name(employeeRequest.getName())
+            .department(employeeRequest.getDepartment())
+            .build();
+
+        PersonalDetails personalDetails = PersonalDetails.builder()
+            .contactNumber(employeeRequest.getContactNumber())
+            .bloodGroup(employeeRequest.getBloodGroup())
+            .build();
 
         employee.setPersonalDetails(personalDetails);
-        employee = employeeRepository.save(employee);
-        return employee;
+
+        return employeeRepository.save(employee);
     }
 
     @Transactional
     public Employee addProject(ProjectRequest projectRequest) {
         log.debug("Adding Project with request: {}", projectRequest);
-        Employee employee = employeeRepository.findByGlobalId(projectRequest.getGlobalId());
-        if (employee == null) {
-            throw new EmployeeException("Invalid Global ID");
-        }
+        Employee employee = employeeRepository
+            .findByGlobalId(projectRequest.getGlobalId())
+            .orElseThrow(() -> new EmployeeException("Invalid Global ID"));
 
-        Project project = projectRepository.findByProjectCode(projectRequest.getProjectCode());
-        if (project == null) {
-            project = new Project();
-            project.setProjectName(projectRequest.getProjectName());
-            project.setProjectCode(projectRequest.getProjectCode());
-        }
+        Project project = projectRepository
+            .findByProjectCode(projectRequest.getProjectCode())
+            .orElseGet(() -> Project.builder()
+                .projectCode(projectRequest.getProjectCode())
+                .projectName(projectRequest.getProjectName())
+                .build());
 
         employee.addProject(project);
+
         return employeeRepository.save(employee);
     }
 
     @Transactional
     public Employee addPreviousCompany(PreviousCompanyRequest previousCompanyRequest) {
         log.debug("Adding Previous Company with request: {}", previousCompanyRequest);
-        Employee employee = employeeRepository.findByGlobalId(previousCompanyRequest.getGlobalId());
-        if (employee == null) {
-            throw new EmployeeException("Invalid Global ID");
-        }
+        Employee employee = employeeRepository
+            .findByGlobalId(previousCompanyRequest.getGlobalId())
+            .orElseThrow(() -> new EmployeeException("Invalid Global ID"));
 
-        PreviousCompany previousCompany = new PreviousCompany();
-        previousCompany.setCompanyName(previousCompanyRequest.getCompanyName());
-        previousCompany.setStartDate(previousCompanyRequest.getStartDate());
-        previousCompany.setEndDate(previousCompanyRequest.getEndDate());
+        PreviousCompany previousCompany = PreviousCompany.builder()
+            .companyName(previousCompanyRequest.getCompanyName())
+            .startDate(previousCompanyRequest.getStartDate())
+            .endDate(previousCompanyRequest.getEndDate())
+            .build();
+
+
         employee.addPreviousCompany(previousCompany);
         return employeeRepository.save(employee);
     }

@@ -15,7 +15,7 @@
 	<description>My Spring Boot project</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<swagger.version>2.4.0</swagger.version>
 	</properties>
 
@@ -37,7 +37,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.16</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- Swagger -->

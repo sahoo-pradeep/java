@@ -21,7 +21,7 @@ Spring Bean is just a Spring-managed instantiation of Java class.
 Spring IoC is responsible for instantiating, initializing, and wiring beans. It also manages the
 lifecycle of a Bean.
 */
-@Component
+//@Component
 public class SpringBeanLifeCycle
         implements InitializingBean, DisposableBean, BeanNameAware, BeanFactoryAware,
         ApplicationContextAware, BeanPostProcessor {
@@ -64,7 +64,7 @@ public class SpringBeanLifeCycle
 
     // 8. Call afterPropertiesSet of InitializingBean
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         System.out.println("## The Lifecycle bean has its property set");
     }
 
@@ -81,7 +81,7 @@ public class SpringBeanLifeCycle
 
     // 11. Call to destroy of DisposableBean
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         System.out.println("## The Lifecycle bean has been terminated");
     }
 }
