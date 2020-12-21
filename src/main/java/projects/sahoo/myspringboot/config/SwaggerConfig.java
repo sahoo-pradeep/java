@@ -12,7 +12,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-// Add @Configuration to create a Spring Bean of external class
+// Add @Configuration to create a Spring @Bean of external class
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

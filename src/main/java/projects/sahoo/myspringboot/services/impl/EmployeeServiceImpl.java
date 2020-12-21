@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.services;
+package projects.sahoo.myspringboot.services.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,29 +16,30 @@ import projects.sahoo.myspringboot.models.entities.PreviousCompany;
 import projects.sahoo.myspringboot.models.entities.Project;
 import projects.sahoo.myspringboot.repositories.EmployeeRepository;
 import projects.sahoo.myspringboot.repositories.ProjectRepository;
+import projects.sahoo.myspringboot.services.api.EmployeeService;
 
 @Service
 @Slf4j
-public class EmployeeService {
+public class EmployeeServiceImpl implements EmployeeService {
 
   private final EmployeeRepository employeeRepository;
   private final ProjectRepository projectRepository;
 
   @Autowired
-  public EmployeeService(EmployeeRepository employeeRepository,
+  public EmployeeServiceImpl(EmployeeRepository employeeRepository,
       ProjectRepository projectRepository) {
     this.employeeRepository = employeeRepository;
     this.projectRepository = projectRepository;
   }
 
-  @Transactional(readOnly = true)
-  public List<Employee> getAllEmployees() {
-    return employeeRepository.findAll();
+  @Transactional
+  public Optional<Employee> getEmployee(String globalId) {
+    return employeeRepository.findByGlobalId(globalId);
   }
 
   @Transactional(readOnly = true)
-  public Optional<Employee> getEmployee(String globalId) {
-    return employeeRepository.findByGlobalId(globalId);
+  public List<Employee> getAllEmployees() {
+    return employeeRepository.findAll();
   }
 
   @Transactional

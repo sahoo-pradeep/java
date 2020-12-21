@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.learn;
+package projects.sahoo.bean_lifecycle;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

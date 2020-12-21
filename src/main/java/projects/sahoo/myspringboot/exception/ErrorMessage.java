@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.models.utils;
+package projects.sahoo.myspringboot.exception;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

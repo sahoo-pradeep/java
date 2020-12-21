@@ -1,4 +1,4 @@
-package projects.sahoo.myspringboot.learn;
+package projects.sahoo.bean_lifecycle;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

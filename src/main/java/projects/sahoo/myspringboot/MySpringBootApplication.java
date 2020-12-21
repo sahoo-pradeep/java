@@ -2,13 +2,15 @@ package projects.sahoo.myspringboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"projects.sahoo.myspringboot", "projects.sahoo.bootstrap"})
+@ComponentScan(basePackages = {"projects.sahoo"})
 public class MySpringBootApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(MySpringBootApplication.class, args);
+    ApplicationContext applicationContext =
+        SpringApplication.run(MySpringBootApplication.class, args);
   }
 }

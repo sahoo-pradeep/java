@@ -10,7 +10,7 @@ import projects.sahoo.myspringboot.controllers.request.PreviousCompanyRequest;
 import projects.sahoo.myspringboot.controllers.request.ProjectRequest;
 import projects.sahoo.myspringboot.models.enums.BloodGroup;
 import projects.sahoo.myspringboot.models.enums.Department;
-import projects.sahoo.myspringboot.services.EmployeeService;
+import projects.sahoo.myspringboot.services.impl.EmployeeServiceImpl;
 
 @Component
 public class DevBootstrap {
@@ -29,10 +29,10 @@ public class DevBootstrap {
   private static final LocalDate END_DATE = LocalDate.of(2019, 3, 31);
 
 
-  private final EmployeeService employeeService;
+  private final EmployeeServiceImpl employeeService;
 
   @Autowired
-  public DevBootstrap(EmployeeService employeeService) {
+  public DevBootstrap(EmployeeServiceImpl employeeService) {
     this.employeeService = employeeService;
   }
 

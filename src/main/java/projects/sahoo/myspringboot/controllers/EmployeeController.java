@@ -17,17 +17,17 @@ import projects.sahoo.myspringboot.controllers.request.EmployeeRequest;
 import projects.sahoo.myspringboot.controllers.request.PreviousCompanyRequest;
 import projects.sahoo.myspringboot.controllers.request.ProjectRequest;
 import projects.sahoo.myspringboot.models.entities.Employee;
-import projects.sahoo.myspringboot.services.EmployeeService;
+import projects.sahoo.myspringboot.services.impl.EmployeeServiceImpl;
 
 @Slf4j
 @RestController
 @Api
 public class EmployeeController {
 
-  private final EmployeeService employeeService;
+  private final EmployeeServiceImpl employeeService;
 
   @Autowired
-  public EmployeeController(EmployeeService employeeService) {
+  public EmployeeController(EmployeeServiceImpl employeeService) {
     this.employeeService = employeeService;
   }
 

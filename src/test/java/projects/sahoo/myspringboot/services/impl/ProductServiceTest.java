@@ -12,14 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import projects.sahoo.myspringboot.models.entities.Product;
-import projects.sahoo.myspringboot.repositories.ProductRepository;
-import projects.sahoo.myspringboot.services.api.ProductService;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest
 class ProductServiceTest {
-
+/*
   private static final String PRODUCT_NAME = "Product Name";
 
   // Service that we want to test
@@ -89,4 +86,6 @@ class ProductServiceTest {
     Assertions
         .assertEquals(1, returnedProduct.getVersion(), "Version for a new product should be 1");
   }
+
+ */
 }
